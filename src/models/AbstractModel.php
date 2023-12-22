@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace models;
 
@@ -38,7 +38,6 @@ abstract class AbstractModel
             );
             return $query->fetchAll();
         }
-        
     }
 
     /**
@@ -67,11 +66,11 @@ abstract class AbstractModel
     {
         foreach ($data as $key => $value) {
             $method = 'set' . ucfirst($key);
-            if(method_exists($this, $method)) {
+            if (method_exists($this, $method)) {
                 $this->$method($value);
             }
         }
-    } 
+    }
 
     /**
      * Method create()
@@ -95,10 +94,17 @@ abstract class AbstractModel
      */
     public function update($slug): void
     {
-        $query = $this->pdo->prepare(
-            "UPDATE {$this->table} SET {$this->fields} WHERE slug = '{$slug}'"
+        $settedValues = '';
+        $fields = explode(", ", $this->fields);
+        $valueBinded = $this->valuesBinded;
+         
+        for ($i=0; $i < count($fields) ; $i++) { 
+            $settedValues .= "{$fields[$i]} = '{$valueBinded[':'.$fields[$i]]}', ";
+        }
+        $settedValues = substr($settedValues, 0, -2) . ' ';
+        $query = $this->pdo->query(
+            "UPDATE {$this->table} SET {$settedValues} WHERE slug = '{$slug}'"
         );
-        $query->execute();
     }
 
     /**
@@ -110,7 +116,7 @@ abstract class AbstractModel
      */
     public function delete(string $slug, ?string $relation): void
     {
-        if($relation) {
+        if ($relation) {
             $relationLower = strtolower($relation);
             $query = $this->pdo->prepare(
                 "DELETE FROM {$this->table} WHERE {$relationLower} = {$slug}"

@@ -5,6 +5,7 @@ namespace controllers;
 use controllers\AbstractController;
 
 use models\Note;
+use services\UploadImage;
 
 class NoteController extends AbstractController
 {
@@ -15,27 +16,39 @@ class NoteController extends AbstractController
             ->setSlug(uniqid("note_"))
             ->setContent($_POST['content']);
         if (isset($_FILES['image'])) {
-            $dirUpload = __DIR__ . '/../../assets/images/uploads/';
-            $newFileName = uniqid() . '_' . $_FILES['image']['name'];
-            $filePath = $dirUpload . $newFileName;
-            $note->setImage($newFileName);
-            if (move_uploaded_file($_FILES['image']['tmp_name'], $filePath)) {
-                $note->bindValues();
-                $note->create();
-                header('Location: /notes');
-            }
+            $note->setImage(UploadImage::upload($_FILES['image']));
+            $note->bindValues();
+            $note->create();
+            header('Location: /notes');
         }
     }
 
-    static public function update()
+    static public function edit($slug)
     {
-        // echo 'Test OK';
-        $note = new Note();
-        $note->setTitle($_POST['title'])
-            ->setContent($_POST['content']);
-        $note->bindValues();
-        $note->update($_POST['slug']);
-        header('Location: /notes');
+        // Get actual data of the note
+        $currentNote = new Note();
+        $currentNote->find($slug);
+
+        // Compare whit the form data sended
+        if ($currentNote->getTitle() != $_POST['title']) {
+            $currentNote->setTitle($_POST['title']);
+        }
+        if ($currentNote->getContent() != $_POST['content']) {
+            $currentNote->setContent($_POST['content']);
+        }
+
+        if (!empty($_FILES['image'])) {
+            if ($currentNote->getImage() != $_FILES['image']['name']) {
+                $currentNote->setImage(UploadImage::upload($_FILES['image']));
+            }
+        }
+
+        // var_dump($currentNote);
+        // die();
+
+        $currentNote->bindValues();
+        $currentNote->update($slug);
+        header('Location: /note?slug=' . $slug);
     }
 }
 // Don't write any code below this line

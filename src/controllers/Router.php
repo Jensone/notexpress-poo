@@ -106,43 +106,18 @@ class Router
     {
         if ($slug) {
             if ($request == '/note/edit?slug=' . $slug) {
-                // Get actual data of the note
-                $currentNote = new Note();
-                $currentNote->find($slug);
-
-                // Compare whit the form data sended
-                $newNote = new Note();
-                if ($currentNote->getTitle() != $_POST['title']) {
-                    $newNote->setTitle($_POST['title']);
-                }
-                if ($currentNote->getContent() != $_POST['content']) {
-                    $newNote->setContent($_POST['content']);
-                }
-
-                var_dump($currentNote, $newNote);
-                die();
+                NoteController::edit($slug);
             }
-        }
-        switch ($request) {
-            case '/note/add':
-            case '/note/add/':
-                // add() is a static method of the NoteController class
-                NoteController::add();
-                break;
-                // case '/note/edit':
-                // case '/note/edit/':
-                //     // TODO: handle the update of a note in the NoteController
-                //     // $pageTitle = "Modification d'une note";
-                //     // $pageDescription = "Modifiez une note sur NoteXpress.";
-                //     // NoteController::update();
-                //     var_dump($_POST);
-                //     break;
-            default:
-                http_response_code(404);
-                $pageTitle = "Page introuvable";
-                $pageDescription = "La page demandée n'existe pas.";
-                require __DIR__ . '/../../views/404.php';
-                break;
+        } elseif ($request == '/note/add' || $request == '/note/add/') {
+            // add() is a static method of the NoteController class
+            NoteController::add();
+            return;
+        } else {
+            http_response_code(404);
+            $pageTitle = "Page introuvable";
+            $pageDescription = "La page demandée n'existe pas.";
+            require __DIR__ . '/../../views/404.php';
+            return;
         }
     }
 }
