@@ -26,5 +26,16 @@ class NoteController extends AbstractController
             }
         }
     }
+
+    static public function update()
+    {
+        // echo 'Test OK';
+        $note = new Note();
+        $note->setTitle($_POST['title'])
+            ->setContent($_POST['content']);
+        $note->bindValues();
+        $note->update($_POST['slug']);
+        header('Location: /notes');
+    }
 }
 // Don't write any code below this line
