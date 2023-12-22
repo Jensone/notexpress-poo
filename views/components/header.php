@@ -26,3 +26,4 @@
         <a class="me-3 py-2 text-body-emphasis text-decoration-none" href="/note/add">Créer une note</a>
       </nav>
     </header>
+    <main class="container">

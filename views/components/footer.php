@@ -1,3 +1,4 @@
+        </main>
         <footer class="pt-3 mt-4 text-body-secondary border-top text-center">
             <?= date('Y') ?> • NoteXpress
         </footer>

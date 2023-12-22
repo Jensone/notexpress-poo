@@ -56,9 +56,8 @@ class Router
             $note = new Note();
             $note->find($slug);
             if ($request == '/note?slug=' . $slug) {
-                $pageTitle = "Note";
-                $pageDescription = "Consultez une note de NoteXpress.";
-                var_dump($note);
+                $pageTitle = $note->getTitle();
+                $pageDescription = substr($note->getContent(), 0, 100) . '...';
                 require __DIR__ . '/../../views/notes/show.php';
                 return;
             } elseif ($request == '/note/edit?slug=' . $slug) {

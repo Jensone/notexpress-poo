@@ -99,12 +99,14 @@ abstract class AbstractModel
         $valueBinded = $this->valuesBinded;
          
         for ($i=0; $i < count($fields) ; $i++) { 
-            $settedValues .= "{$fields[$i]} = '{$valueBinded[':'.$fields[$i]]}', ";
+            $settedValues .= "{$fields[$i]} = :$fields[$i], ";
         }
         $settedValues = substr($settedValues, 0, -2) . ' ';
-        $query = $this->pdo->query(
+
+        $query = $this->pdo->prepare(
             "UPDATE {$this->table} SET {$settedValues} WHERE slug = '{$slug}'"
         );
+        $query->execute($this->valuesBinded);
     }
 
     /**
