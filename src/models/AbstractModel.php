@@ -25,13 +25,20 @@ abstract class AbstractModel
      * @param void
      * @return array
      */
-    public function findAll(): array
+    public function findAll(?string $order = null): array
     {
-        $query = $this->pdo->prepare(
-            "SELECT * FROM {$this->table}"
-        );
-        $query->execute();
-        return $query->fetchAll();
+        if ($order) {
+            $query = $this->pdo->query(
+                "SELECT * FROM {$this->table} ORDER BY {$order}"
+            );
+            return $query->fetchAll();
+        } else {
+            $query = $this->pdo->query(
+                "SELECT * FROM {$this->table}"
+            );
+            return $query->fetchAll();
+        }
+        
     }
 
     /**
