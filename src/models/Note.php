@@ -9,13 +9,15 @@ class Note extends AbstractModel
     private string $title;
     private string $content;
     private string $slug;
+    private string $image;
     protected string $table = 'notes';
-    protected string $fields = 'title, slug, content';
-    protected string $values = ':title, :slug, :content';
+    protected string $fields = 'title, slug, content, image';
+    protected string $values = ':title, :slug, :content, :image';
     protected array $valuesBinded = [
         ':title' => '',
         ':slug' => '',
-        ':content' => ''
+        ':content' => '', 
+        ':image' => ''
     ];
 
     public function getTitle(): string
@@ -62,6 +64,27 @@ class Note extends AbstractModel
         $this->valuesBinded[':title'] = $this->title;
         $this->valuesBinded[':slug'] = $this->slug;
         $this->valuesBinded[':content'] = $this->content;
+        $this->valuesBinded[':image'] = $this->image;
+    }
+
+    /**
+     * Get the value of image
+     */ 
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * Set the value of image
+     *
+     * @return  self
+     */ 
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        return $this;
     }
 }
 // Don't write any code below this line

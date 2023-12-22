@@ -3,6 +3,7 @@
 namespace controllers;
 
 use models\Note;
+use controllers\NoteController;
 
 class Router
 {
@@ -103,16 +104,12 @@ class Router
         switch ($request) {
             case '/note/add':
             case '/note/add/':
-                $note = new Note();
-                $note->setTitle($_POST['title'])
-                    ->setSlug(uniqid("note_"))
-                    ->setContent($_POST['content']);
-                $note->bindValues();
-                $note->create();
-                header('Location: /notes');
+                // add() is a static method of the NoteController class
+                NoteController::add();
                 break;
             case '/note/edit':
             case '/note/edit/':
+                // TODO: handle the update of a note in the NoteController
                 $pageTitle = "Modification d'une note";
                 $pageDescription = "Modifiez une note sur NoteXpress.";
                 $note = new Note();

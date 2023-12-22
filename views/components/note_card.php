@@ -15,5 +15,8 @@
                 <i class="bi bi-arrow-right-circle"></i>
             </a>
         </div>
+        <!-- <div class="">
+            <img src="/assets/images/uploads/<?= !empty($note['image']) ? $note['image'] : '' ?>" alt="" class="img-fluid">
+        </div> -->
     </div>
 </div>
