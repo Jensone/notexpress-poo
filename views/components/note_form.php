@@ -1,4 +1,5 @@
 <form action="" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="slug" value="<?= !empty($note) ? $note->getSlug() : '' ?>">
     <div class="form-group mb-2">
         <label for="title" class="form-label">Titre de la note</label>
         <input 
