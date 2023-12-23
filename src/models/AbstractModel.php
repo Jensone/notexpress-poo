@@ -96,13 +96,11 @@ abstract class AbstractModel
     {
         $settedValues = '';
         $fields = explode(", ", $this->fields);
-        $valueBinded = $this->valuesBinded;
          
         for ($i=0; $i < count($fields) ; $i++) { 
             $settedValues .= "{$fields[$i]} = :$fields[$i], ";
         }
         $settedValues = substr($settedValues, 0, -2) . ' ';
-
         $query = $this->pdo->prepare(
             "UPDATE {$this->table} SET {$settedValues} WHERE slug = '{$slug}'"
         );
